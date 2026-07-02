@@ -674,6 +674,7 @@ void AudioAnalysis::parseMetaLyrics(DMusic::MediaMeta &meta)
         // 歌词文件存在，停止解析
         if (lyricDir.exists(lyricName)) {
             qCDebug(dmMusic) << "Lyrics file already exists, skipping parsing:" << lyricName;
+            meta.lyricPath = lyricDirPath + QDir::separator() + lyricName;  // backfill for DB/persistence
             return;
         }
 
@@ -716,6 +717,7 @@ void AudioAnalysis::parseMetaLyrics(DMusic::MediaMeta &meta)
                     if (!lyricStr.isEmpty()) {
                         if (lyric.open(QIODevice::WriteOnly)) {
                             lyric.write(lyricStr.toUtf8());
+                            meta.lyricPath = lyricDirPath + QDir::separator() + lyricName;  // backfill for DB/persistence
                             qCInfo(dmMusic) << "Successfully extracted and saved lyrics for file:" << path;
                         } else {
                             qCWarning(dmMusic) << "Failed to open lyrics file for writing:" << lyricName;

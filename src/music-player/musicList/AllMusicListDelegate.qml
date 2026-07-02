@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -19,7 +19,7 @@ ItemDelegate{
     property bool showExtendedColumns: listview.width > 500
 
     id: rootRectangle
-    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
     checked: inMulitSelect
     hoverEnabled: true
 

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2023 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -111,6 +111,32 @@ ListModel {
             }
         }
     }
+    function onMetaCoverReady(meta) {
+        for (var i = 0; i < albumModel.listCount; i++) {
+            var album = albumModel.get(i)
+            var tmpModel = album.musicinfos
+            var updated = false
+            for (var key in tmpModel) {
+                if (tmpModel[key].hash === meta.hash) {
+                    tmpModel[key].coverUrl = meta.coverUrl
+                    tmpModel[key].hasimage = meta.hasimage
+                    tmpModel[key].lyricPath = meta.lyricPath
+                    updated = true
+                    break
+                }
+            }
+            if (!updated) continue
+            album.musicinfos = tmpModel
+            // recompute coverUrl: prefer a meta with real cover, else any
+            var newCover = ""
+            for (var k in tmpModel) {
+                if (tmpModel[k].hasimage === true) { newCover = tmpModel[k].coverUrl; break }
+                if (newCover === "") newCover = tmpModel[k].coverUrl
+            }
+            album.coverUrl = newCover
+            albumModel.set(i, album)
+        }
+    }
     Component.onCompleted: {
         albumModel.loadArtistDatas();
         Presenter.importFinished.connect(loadArtistDatas)
@@ -118,5 +144,6 @@ ListModel {
         Presenter.addOneMeta.connect(onAddOneMetaFinished);
         Presenter.playlistSortChanged.connect(playlistSortChanged)
         Presenter.updatedMetaCodec.connect(onUpdatedMetaCodec)
+        Presenter.metaCoverReady.connect(onMetaCoverReady)
     }
 }
