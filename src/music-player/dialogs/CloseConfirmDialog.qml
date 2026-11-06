@@ -20,6 +20,7 @@ DialogWindow {
     height: 230
     modality: Qt.ApplicationModal
     icon: globalVariant.appIconName
+    transientParent: globalVariant.parent
     Binding on flags {
         when: Qt.platform.os === "windows"
         value: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint | Qt.FramelessWindowHint
@@ -30,7 +31,7 @@ DialogWindow {
     }
 
     onVisibleChanged: {
-        if (visible && Qt.platform.os === "windows") {
+        if (visible) {
             x = (Screen.width - width) / 2
             y = (Screen.height - height) / 2
         }

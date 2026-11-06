@@ -26,9 +26,10 @@ Settings.SettingsDialog {
     config: SettingsConfig { Accessible.name: "SettingsDialog_SettingsConfig"; Accessible.role: Accessible.Pane }
     flags: Qt.Dialog | Qt.WindowCloseButtonHint
     modality: Qt.WindowModal
+    transientParent: globalVariant.parent
 
     onVisibleChanged: {
-        if (visible && Qt.platform.os === "windows") {
+        if (visible) {
             x = (Screen.width - width) / 2
             y = (Screen.height - height) / 2
         }
@@ -462,9 +463,10 @@ Settings.SettingsDialog {
         modality: Qt.ApplicationModal
 //        color: Qt.rgba(247,247,247,0.80);
         icon: globalVariant.appIconName
+        transientParent: globalVariant.parent
 
         onVisibleChanged: {
-            if (visible && Qt.platform.os === "windows") {
+            if (visible) {
                 x = (Screen.width - width) / 2
                 y = (Screen.height - height) / 2
             }
